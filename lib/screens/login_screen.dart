@@ -102,7 +102,7 @@ class LoginScreen extends StatelessWidget {
                           decoration: InputDecoration(
                             border:
                                 OutlineInputBorder(borderRadius: defaultBorder),
-                            labelText: "Email or Username",
+                            labelText: "Username",
                           ),
                         ),
                         defaultVerticalSizedBox,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/providers/auth_provider.dart';
 import 'package:todo_app/providers/theme_provider.dart';
+import 'package:todo_app/screens/home_screen.dart';
 import 'package:todo_app/screens/login_screen.dart';
 
 class MyApp extends StatelessWidget {
@@ -31,7 +33,11 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: LoginScreen(),
+      home: context.watch<AuthProvider>().isAuthenticated == null
+          ? Scaffold(body: Center(child: CircularProgressIndicator()))
+          : context.watch<AuthProvider>().isAuthenticated!
+              ? HomeScreen()
+              : LoginScreen(),
     );
   }
 }

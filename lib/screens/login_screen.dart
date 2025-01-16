@@ -1,10 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/providers/auth_provider.dart';
 import 'package:todo_app/screens/home_screen.dart';
 import 'package:todo_app/utils/constants.dart';
 import 'package:todo_app/utils/validator.dart';
-import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -15,22 +14,13 @@ class LoginScreen extends StatelessWidget {
 
   LoginScreen({super.key});
 
-  // Handle form submission
   void onLoginClick(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
-      // If the form is valid, make the POST request
-      var url = Uri.parse('https://dummyjson.com/auth/login');
-      var response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'username': _usernameController.text,
-          'password': _passwordController.text,
-        }),
-      );
-      if (response.statusCode == 200 && context.mounted) {
+      await context
+          .read<AuthProvider>()
+          .login(_usernameController.text, _passwordController.text);
+      if (context.mounted &&
+          context.read<AuthProvider>().isAuthenticated == true) {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Login Successful'),

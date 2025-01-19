@@ -59,7 +59,7 @@ class TaskProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateTask(Task task, bool completed) async {
+  Future<void> updateTaskStatus(Task task, bool completed) async {
     _isLoading = true;
     notifyListeners();
     final url = Uri.parse('https://dummyjson.com/todos/${task.id}');
@@ -85,6 +85,40 @@ class TaskProvider with ChangeNotifier {
         id: task.id,
         completed: completed,
         todo: task.todo,
+        userId: task.userId,
+      );
+      _tasks.insert(i, newTask);
+    }
+    _isLoading = false;
+    notifyListeners();
+  }
+
+    Future<void> updateTaskTodo(Task task, String todo) async {
+    _isLoading = true;
+    notifyListeners();
+    final url = Uri.parse('https://dummyjson.com/todos/${task.id}');
+    final body = jsonEncode({
+      'todo': todo,
+    });
+    final response = await http.put(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: body,
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      Task newTask = Task.fromJson(json.decode(response.body));
+      int i = _tasks.indexOf(task);
+      _tasks.remove(task);
+      _tasks.insert(i, newTask);
+    } else if (response.statusCode == 404) {
+      //An added task is not actually added to the server
+      int i = _tasks.indexOf(task);
+      _tasks.remove(task);
+      Task newTask = Task(
+        id: task.id,
+        completed: task.completed,
+        todo: todo,
         userId: task.userId,
       );
       _tasks.insert(i, newTask);

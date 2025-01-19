@@ -168,7 +168,7 @@ class HomeScreen extends StatelessWidget {
                   Navigator.pop(context); // Close the dialog
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Please enter a task name')),
+                    SnackBar(content: Text('Please enter a task todo')),
                   );
                 }
               },

@@ -6,13 +6,13 @@ import '../models/user.dart';
 
 class AuthProvider with ChangeNotifier {
   User? _user;
-  bool? _isAuthenticated = null;
+  bool _isAuthenticated = false;
   bool _isLoading = false;
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   User? get user => _user;
 
-  bool? get isAuthenticated => _isAuthenticated;
+  bool get isAuthenticated => _isAuthenticated;
 
   bool get isLoading => _isLoading;
 
@@ -53,15 +53,19 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> loadTokens() async {
+    _isLoading = true;
+    notifyListeners();
     final accessToken = await _secureStorage.read(key: 'accessToken');
     final refreshToken = await _secureStorage.read(key: 'refreshToken');
-
     if (accessToken == null || refreshToken == null) {
       _isAuthenticated = false;
+      _isLoading = false;
       notifyListeners();
       return;
     }
     await refreshAccessToken(refreshToken);
+    _isLoading = false;
+    notifyListeners();
   }
 
   Future<void> refreshAccessToken(String refreshToken) async {

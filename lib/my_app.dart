@@ -33,9 +33,9 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: context.watch<AuthProvider>().isAuthenticated == null
+      home: context.watch<AuthProvider>().isLoading
           ? Scaffold(body: Center(child: CircularProgressIndicator()))
-          : context.watch<AuthProvider>().isAuthenticated!
+          : context.watch<AuthProvider>().isAuthenticated
               ? HomeScreen()
               : LoginScreen(),
     );

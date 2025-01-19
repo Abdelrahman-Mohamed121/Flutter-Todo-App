@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/providers/auth_provider.dart';
+import 'package:todo_app/providers/task_provider.dart';
 import 'package:todo_app/screens/home_screen.dart';
 import 'package:todo_app/utils/constants.dart';
 import 'package:todo_app/utils/validator.dart';
@@ -14,7 +15,7 @@ class LoginScreen extends StatelessWidget {
 
   LoginScreen({super.key});
 
-  void onLoginClick(BuildContext context) async {
+  Future<void> onLoginClick(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       await context
           .read<AuthProvider>()
@@ -26,6 +27,9 @@ class LoginScreen extends StatelessWidget {
           content: Text('Login Successful'),
           backgroundColor: Colors.green,
         ));
+        TaskProvider taskProvider = context.read<TaskProvider>();
+        taskProvider.clearTasks();
+        await taskProvider.fetchTasks(context.read<AuthProvider>().user!.id);
         if (context.mounted) {
           Navigator.pushReplacement(
             context,

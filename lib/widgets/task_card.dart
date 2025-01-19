@@ -9,12 +9,14 @@ class TaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 5,
       margin: const EdgeInsets.all(8.0),
       child: ListTile(
         title: Text(task.todo),
+        subtitle: Text(task.completed ? 'Done' : 'To Do'),
         trailing: Icon(
-          task.completed ? Icons.check_circle : Icons.circle_outlined,
-          color: task.completed ? Colors.green : Colors.grey,
+          task.completed ? Icons.check_circle : Icons.radio_button_unchecked,
+          color: task.completed ? Colors.green : Colors.red,
         ),
       ),
     );

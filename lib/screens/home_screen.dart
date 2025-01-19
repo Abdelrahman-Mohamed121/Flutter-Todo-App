@@ -48,7 +48,13 @@ class HomeScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 18.0,
-                  backgroundColor: Colors.amber,
+                  backgroundImage: context
+                          .read<AuthProvider>()
+                          .user!
+                          .image
+                          .isNotEmpty
+                      ? NetworkImage(context.read<AuthProvider>().user!.image)
+                      : AssetImage('assets/profile.jpg'),
                 ),
                 defaultHorizontalSizedBox,
                 Expanded(

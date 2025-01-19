@@ -8,10 +8,8 @@ import 'package:todo_app/utils/validator.dart';
 
 class LoginScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController =
-      TextEditingController(text: 'emilys');
-  final TextEditingController _passwordController =
-      TextEditingController(text: 'emilyspass');
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   LoginScreen({super.key});
 
